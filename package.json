@@ -1,0 +1,24 @@
+{
+  "name": "getflix_movie_detail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpp36-boc-catamaran/getflix_movie_detail.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpp36-boc-catamaran/getflix_movie_detail/issues"
+  },
+  "homepage": "https://github.com/rpp36-boc-catamaran/getflix_movie_detail#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20"
+  }
+}
