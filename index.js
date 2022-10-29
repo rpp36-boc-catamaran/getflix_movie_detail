@@ -44,6 +44,7 @@ app.get('/details/:movieId', async (req, res) => {
 app.get('/details/price/:movieId', async (req, res) => {
   const id = req.params.movieId;
   // console.log(id);
+  let sentBack = [];
   const API_URL = 'https://api.themoviedb.org/3/';
   const fetchProvieder = async (id) => {
     const { data } = await axios.get(`${API_URL}/movie/${id}/watch/providers`, {
@@ -52,10 +53,16 @@ app.get('/details/price/:movieId', async (req, res) => {
         append_to_response: 'videos'
       }
     })
-    //  console.log(data.results.US.link);
-    return data.results.US.link;
+    console.log(data.results);
+    if (data.results.US) {
+      return data.results.US.link;
+    } else {
+      return data.results.ES.link;
+    }
+
   }
   const movieUrl = await fetchProvieder(id);
+
   console.log(movieUrl);
   const browser = await puppeteer.launch();
   //create a new in headless chrome
@@ -65,14 +72,7 @@ app.get('/details/price/:movieId', async (req, res) => {
     //wait for content to load
     waitUntil: 'networkidle0',
   });
-  const html = await page.content();
-  //get price
-
-  // if (await page.$eval('.buy .price', el => el.innerText)) {
-  //   price = await page.$eval('.buy .price', el => el.innerText);
-  // } else {
-  //   price = 'Stream';
-  // }
+ //const html = await page.content();
   const price = await page.evaluate(() => {
     const element = document.querySelector('.buy .price')
     if (element) {
@@ -84,7 +84,7 @@ app.get('/details/price/:movieId', async (req, res) => {
   const mUrl = await page.evaluate(() =>
     Array.from(document.querySelectorAll('ul.providers > li a')).map(a => a.href)
   );
-  const sentBack = [price, mUrl[0]];
+  sentBack = [price, mUrl[0]];
   console.log(sentBack);
   //close headless chrome
   await browser.close();
